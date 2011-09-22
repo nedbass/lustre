@@ -78,3 +78,14 @@ ll_dirstripe_verify_LDADD= -L$(top_builddir)/lustre/utils -llustreapi
 flocks_test_SOURCES=flocks_test.c
 flocks_test_LDADD=-lpthread
 
+genscripts = test-framework.sh
+
+$(genscripts): %: %.in Makefile
+	-sed	-e 's,@MKE2FS\@,$(MKE2FS),g' \
+		-e 's,@DEBUGFS\@,$(DEBUGFS),g' \
+		-e 's,@TUNE2FS\@,$(TUNE2FS),g' \
+		-e 's,@E2LABEL\@,$(E2LABEL),g' \
+		-e 's,@DUMPE2FS\@,$(DUMPE2FS),g' \
+		-e 's,@E2FSCK\@,$(E2FSCK),g' \
+		'$@.in' >'$@'
+	chmod +x $@
