@@ -240,6 +240,11 @@ int zfs_write_ldd(struct mkfs_opts *mop)
         if (ret)
                 goto out_close;
 
+        /* Store xattrs in SA by default */
+        ret = zfs_set_prop_str(zhp, "xattr", "sa");
+        if (ret)
+                goto out_close;
+
 out_close:
         zfs_close(zhp);
 out:
